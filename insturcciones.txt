@@ -1,0 +1,182 @@
+1 - El apartado de index.html mostrará una bienvenida al usuario
+
+2 - Una vez en index.html el usuario haga click en "Inicar Ya", este será redirigido al apartado de cursos.html en donde se le mostrará el tipo de aprendizajes disponibles
+
+3 - Dependiendo la eleccion de curso, se le enviará al apartado de plataformas.html y ahi se le renderizará las tecnologias que puede abordar para dicho curso
+
+4 - Una vez el usuario elija una herramienta, se le redirigirá a la carpeta modulos, en su archivo modulos.html, ahi se desplegará un menu interactivo con los subtemas disponibles,
+
+5 - Ya que el usuario elija un modulo para trabajar, en unidad.html se mostrará dinamicamente toda la informacion correspondiente
+
+
+
+
+const cursosPlataforma = {
+  cursosTipo: ["Procesadores De Texto", "Diseño Visual", "Almacenamiento"],
+  editoresTexto: ["Microsoft Word", "Google Docs"],
+  diseñoVisual: ["Power Point", "Canva"],
+  almacenamiento: ["Google Drive"],
+};
+
+const word = [
+  {
+    modulo: "¡Hola Mundo!",
+    lecciones: [
+      { titulo: "Hola, Soy Tu Lienzo" },
+      { titulo: "La Caja De Herramientas" },
+      { titulo: "Tus Primeras Palabras" },
+    ],
+  },
+  {
+    modulo: "El Flujo De Trabajo Básico",
+    lecciones: [
+      { titulo: "El Ciclo De Edición" },
+      { titulo: "Borrón" },
+      { titulo: "Y Cuenta Nueva" },
+    ],
+  },
+  {
+    modulo: "Estructura Y Orden",
+    lecciones: [
+      { titulo: "Organizando Ideas (Listas Multinivel)" },
+      { titulo: "La Cuadricula Perfecta (Introduccion A Tablas)" },
+      { titulo: "Ponle Algo De Estilo" },
+      { titulo: "Dale Vida Con Imágenes" },
+    ],
+  },
+  {
+    modulo: "Automatización y Eficiencia",
+    lecciones: [
+      { titulo: "La Marca Constante (Encabezados Y Pies De Página)" },
+      { titulo: "Nunca Te Pierdas (Numeración De Páginas)" },
+      { titulo: "El Arma Secreta (El Poder De Los Estilos)" },
+      { titulo: "El Mapa De Tu Documento (Tabla De Contenido Automatica)" },
+    ],
+  },
+];
+
+//CURSOS//
+document.addEventListener("DOMContentLoaded", () => {
+  const cursosBody = document.querySelector(".cursosBody");
+  const cursosListado = document.querySelector(".cursosListado");
+  for (let i = 0; i < cursosPlataforma.cursosTipo.length; i++) {
+    const cursosDisponibles = document.createElement("button");
+    cursosDisponibles.classList.add("cursosDisponibles");
+    cursosDisponibles.innerText = cursosPlataforma.cursosTipo[i];
+    cursosListado.appendChild(cursosDisponibles);
+
+    cursosDisponibles.addEventListener("click", (e) => {
+      let cursoSeleccionado = e.target.innerText;
+      sessionStorage.setItem("cursoSeleccionado", cursoSeleccionado);
+      window.location.href = "/html/plataformas.html";
+    });
+  }
+  cursosBody.appendChild(cursosListado);
+});
+//CURSOS//
+
+//PLATAFORMAS//
+document.addEventListener("DOMContentLoaded", () => {
+  let cursoSeleccionado = sessionStorage.getItem("cursoSeleccionado");
+
+  const plataformas_body = document.querySelector(".plataformas_body");
+  const plataformasListado = document.querySelector(".plataformasListado");
+  let mensaje = document.getElementById("cursoSeleccionado");
+  let bienvenida = document.getElementById("bienvenida");
+
+  let plataformasDisponibles = [];
+  mensaje.innerText = cursoSeleccionado;
+  plataformas_body.prepend(mensaje);
+
+  if (cursoSeleccionado.includes("Procesadores De Texto")) {
+    plataformasDisponibles = cursosPlataforma.editoresTexto;
+    plataformasDisponibles.forEach((plataforma) => {
+      let plataformas = document.createElement("button");
+      plataformas.classList.add("plataformas");
+      plataformas.innerText = plataforma;
+      plataformasListado.appendChild(plataformas);
+
+      plataformas.addEventListener("click", (e) => {
+        let plataformaSeleccionada = e.target.innerText;
+        sessionStorage.setItem(
+          "plataformaSeleccionada",
+          plataformaSeleccionada
+        );
+
+        window.location.href = "/html/curso/modulos.html";
+      });
+    });
+  }
+
+  if (
+    cursoSeleccionado.includes("Diseño Visual") ||
+    cursoSeleccionado.includes("Almacenamiento")
+  ) {
+    let advertencia = document.createElement("h1");
+    advertencia.classList.add("advertencia");
+    advertencia.innerText = `¡Cursos sobre ${cursoSeleccionado},\ndisponibles proximamente!`;
+    bienvenida.remove();
+    mensaje.remove();
+    plataformas_body.appendChild(advertencia);
+  }
+});
+//PLATAFORMAS//
+
+//MODULOS//
+document.addEventListener("DOMContentLoaded", () => {
+  const plataformaSeleccionada = sessionStorage.getItem(
+    "plataformaSeleccionada"
+  );
+
+  const modulos_body = document.querySelector(".modulos_body");
+  const moduloListado = document.querySelector(".moduloListado");
+
+  const bienvenida = document.getElementById("bienvenida");
+
+  if (plataformaSeleccionada.includes("Microsoft Word")) {
+    let mensaje = document.getElementById("plataformaSeleccionada");
+    mensaje.innerText = plataformaSeleccionada;
+    modulos_body.prepend(mensaje);
+    for (let i = 0; i < word.length; i++) {
+      let modulosDisponible = document.createElement("button");
+      modulosDisponible.classList.add("modulosDisponible");
+      modulosDisponible.innerText = word[i].modulo;
+      moduloListado.appendChild(modulosDisponible);
+
+      modulosDisponible.addEventListener("click", (e) => {
+        let moduloSeleccionado = e.target.innerText;
+        sessionStorage.setItem("moduloSeleccionado", moduloSeleccionado);
+        window.location.href = "/html/curso/unidad.html";
+      });
+    }
+  } else {
+    let advertencia = document.createElement("h1");
+    advertencia.classList.add("advertencia");
+    advertencia.innerText = `¡La plataforma ${plataformaSeleccionada}\nestará disponible proximamente!`;
+    modulos_body.appendChild(advertencia);
+    bienvenida.remove();
+  }
+
+  modulos_body.appendChild(moduloListado);
+});
+//MODULOS//
+
+//UNIDAD//
+document.addEventListener("DOMContentLoaded", () => {
+  let moduloSeleccionado = sessionStorage.getItem("moduloSeleccionado");
+  let mensaje = document.getElementById("moduloSeleccionado");
+  mensaje.innerText = moduloSeleccionado;
+
+  let unidadListado = document.querySelector(".unidadListado");
+
+  for (let i = 0; i < word.length; i++) {
+    if (moduloSeleccionado === word[i].modulo) {
+      for (let j = 0; j < word[i].lecciones.length; j++) {
+        let unidadesDisponible = document.createElement("button");
+        unidadesDisponible.innerText = word[i].lecciones[j].titulo;
+        unidadListado.appendChild(unidadesDisponible);
+      }
+    }
+  }
+});
+//UNIDAD//

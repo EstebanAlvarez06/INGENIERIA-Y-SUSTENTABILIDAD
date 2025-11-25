@@ -920,7 +920,7 @@ body {background: linear-gradient(135deg,#fff7eb,#fde6e0); font-family:"Poppins"
                       redoBtn.getBoundingClientRect().y - 30,
                       "+15 XP"
                     );
-                    // Mensaje final de completado
+
                     setTimeout(() => {
                       showMessage(
                         "🎉 ¡Tutorial completado! Has dominado Deshacer y Rehacer."
@@ -1964,9 +1964,6 @@ body {
       actividades: [
         {
           trabajo: function iniciarTutorialInsertarImagen() {
-            // ==============================
-            // 🌈 ESTILOS Y OVERLAY
-            // ==============================
             const style = document.createElement("style");
             style.textContent = `
         body { background: linear-gradient(135deg,#fff7eb,#fde6e0); font-family:"Poppins",sans-serif; color:#4b3f35; }
@@ -1978,7 +1975,6 @@ body {
         `;
             document.head.appendChild(style);
 
-            // Overlay y mensaje
             const overlay = document.createElement("div");
             overlay.id = "tutorial-overlay";
             document.body.appendChild(overlay);
@@ -1986,7 +1982,6 @@ body {
             msg.id = "tutorial-message";
             document.body.appendChild(msg);
 
-            // Texto tucán
             const texto = document.createElement("div");
             texto.id = "texto-amazonas";
             texto.innerHTML = `
@@ -2009,12 +2004,12 @@ body {
             function showMessage(text) {
               msg.innerHTML = text;
               msg.style.display = "block";
-              overlay.style.display = "none"; // ❗ Nunca se muestra arriba
+              overlay.style.display = "none";
             }
 
             function hideMessage() {
               msg.style.display = "none";
-              overlay.style.display = "none"; // ❗❗ YA NO BLOQUEA NADA
+              overlay.style.display = "none";
             }
 
             function showXP(x, y, text) {
@@ -2173,19 +2168,16 @@ body {
               document.body.appendChild(panelDiseno);
 
               opc.addEventListener("click", () => {
-                // Wrap
                 imagen.style.cssFloat = "left";
                 imagen.style.margin = "0 14px 8px 0";
                 texto.style.display = "block";
 
-                // XP inmediato
                 showXP(
                   panelDiseno.getBoundingClientRect().left,
                   panelDiseno.getBoundingClientRect().top - 30,
                   "+40 XP"
                 );
 
-                // Paso 10: Feedback mágico
                 showMessage(
                   "✨ ¡MAGIA! El texto se está reorganizando alrededor de la imagen…"
                 );
@@ -2197,17 +2189,12 @@ body {
                       "¡+40 XP por esta habilidad de nivel PRO!"
                   );
 
-                  // Iniciar FASE 2
                   setTimeout(() => iniciarFase2(), 1600);
                 }, 1600);
               });
             }
 
-            // ==============================
-            // FASE 2 — DESAFÍO FINAL
-            // ==============================
             function iniciarFase2() {
-              // Limpiar pantalla
               if (panelDiseno) {
                 const botones = panelDiseno.querySelectorAll("button");
                 botones.forEach((btn) => {
@@ -2222,7 +2209,6 @@ body {
               overlay.style.display = "none";
               msg.style.display = "none";
 
-              // Crear área editable
               const area = document.createElement("div");
               area.id = "documento";
               area.contentEditable = "true";
@@ -2234,7 +2220,6 @@ body {
               area.style.overflowWrap = "break-word";
               document.body.appendChild(area);
 
-              // Toolbar
               let toolbar = document.querySelector("#toolbar");
               if (!toolbar) {
                 toolbar = document.createElement("div");
@@ -2256,7 +2241,6 @@ body {
                 "🛠️ DESAFÍO FINAL: Crea la ficha técnica del Chrono-Reloj X1."
               );
 
-              // PASO 1 — Título
               showMessage(
                 "1️⃣ Escribe el título: <b>Chrono-Reloj X1</b> y presiona Enter."
               );
@@ -2269,7 +2253,6 @@ body {
                 }
               });
 
-              // PASO 2 — Insertar imagen
               function iniciarPaso2() {
                 showMessage(
                   "📸 Inserta la imagen con el botón 'Insertar imagen'"
@@ -2288,7 +2271,6 @@ body {
                 });
               }
 
-              // PASO 3 — Mover imagen a la derecha
               function iniciarPaso3() {
                 showMessage(
                   "3️⃣ Haz clic en la imagen para moverla a la derecha"
@@ -2304,7 +2286,6 @@ body {
                 });
               }
 
-              // PASO 4 — Insertar tabla
               function iniciarPaso4() {
                 showMessage(
                   "4️⃣ Inserta la tabla de especificaciones usando el botón 'Insertar tabla'"
@@ -2327,7 +2308,6 @@ body {
                 });
               }
 
-              // PASO 5 — Escribir reseña
               function iniciarPaso5() {
                 showMessage(
                   "5️⃣ Escribe una breve reseña a tu gusto sobre Chrono-Reloj X1 en el área editable de la tabla."
@@ -2344,9 +2324,6 @@ body {
               }
             }
 
-            // ==============================
-            // INICIO
-            // ==============================
             showMessage("Vamos a insertar una imagen...");
             setTimeout(insertarTucanOnce, 700);
           },
@@ -2471,9 +2448,6 @@ body {
               document.head.appendChild(st);
             }
 
-            // =========================
-            // 2) ENCABEZADO GLOBAL
-            // =========================
             let encabezadoGlobal = "";
             function syncHeaders() {
               document.querySelectorAll(".header-zone").forEach((h) => {
@@ -2481,9 +2455,6 @@ body {
               });
             }
 
-            // =========================
-            // 3) DOCUMENTO
-            // =========================
             const doc = document.createElement("div");
             doc.id = "tutorial-doc";
 
@@ -2526,9 +2497,6 @@ Se espera que el próximo año esté marcado por la expansión hacia mercados la
 
             const headers = [...doc.querySelectorAll(".header-zone")];
 
-            // =========================
-            // 4) OVERLAY
-            // =========================
             const overlay = document.createElement("div");
             overlay.id = "tutorial-overlay";
             overlay.innerHTML = `<p>Cargando…</p>`;
@@ -2549,16 +2517,12 @@ Se espera que el próximo año esté marcado por la expansión hacia mercados la
               setTimeout(() => e.remove(), 1500);
             }
 
-            // =========================
-            // 5) LÓGICA DEL TUTORIAL
-            // =========================
             let step = 0;
 
             msg(
               "Aquí tienes un documento de 3 páginas. Desplázate un poco para ver su contenido."
             );
 
-            // PASO 2
             setTimeout(() => {
               step = 1;
               msg("Ve a Insertar > Encabezado. (Simulado con el botón abajo)");
@@ -2583,7 +2547,6 @@ Se espera que el próximo año esté marcado por la expansión hacia mercados la
               overlay.appendChild(btn);
             }, 1500);
 
-            // PASO 3 – Detectar escritura en el encabezado
             headers.forEach((h) => {
               h.addEventListener("input", () => {
                 if (step === 2) {
@@ -2602,7 +2565,6 @@ Se espera que el próximo año esté marcado por la expansión hacia mercados la
               });
             });
 
-            // PASO 4 – Doble clic para salir
             doc.addEventListener("dblclick", (e) => {
               if (step === 3 && !e.target.classList.contains("header-zone")) {
                 msg("Bien. Ahora desplázate entre las páginas…");
@@ -2936,19 +2898,19 @@ body {
   outline: 3px solid #e4d7adff; 
 }
 .titulo1 { 
-  font-size: 28px;        /* más grande */
-  color: #1958d8;         /* azul oscuro */
-  font-weight: 700;       /* negrita */
-  margin-top: 30px;       /* espacio superior */
-  text-decoration: underline; /* opcional para diferenciar */
+  font-size: 28px;      
+  color: #1958d8;         
+  font-weight: 700;       
+  margin-top: 30px;      
+  text-decoration: underline;
 }
 
 .titulo2 { 
-  font-size: 22px;        /* un poco más pequeño */
-  color: #3971e8;         /* azul más claro */
-  font-weight: 600;       /* semi-negrita */
+  font-size: 22px;       
+  color: #3971e8;         
+  font-weight: 600;       
   margin-top: 20px;
-  font-style: italic;     /* para diferenciar del título 1 */
+  font-style: italic;    
 }
 
 #tutorial-overlay { 

@@ -1,0 +1,214 @@
+const cursosPlataforma = {
+  cursosTipo: [
+    {
+      titulo: "Procesadores De Texto",
+      existencia: true,
+      plataformas: [
+        {
+          nombre: "Microsoft Word",
+          modulos: [
+            {
+              modulo: "¡Hola Mundo!",
+              lecciones: [
+                { titulo: "Hola, Soy Tu Lienzo" },
+                { titulo: "La Caja De Herramientas" },
+                { titulo: "Tus Primeras Palabras" },
+              ],
+            },
+            {
+              modulo: "El Flujo De Trabajo Básico",
+              lecciones: [
+                { titulo: "El Ciclo De Edición" },
+                { titulo: "Borrón" },
+                { titulo: "Y Cuenta Nueva" },
+              ],
+            },
+            {
+              modulo: "Estructura Y Orden",
+              lecciones: [
+                { titulo: "Organizando Ideas (Listas Multinivel)" },
+                { titulo: "La Cuadricula Perfecta (Introduccion A Tablas)" },
+                { titulo: "Ponle Algo De Estilo" },
+                { titulo: "Dale Vida Con Imágenes" },
+              ],
+            },
+            {
+              modulo: "Automatización y Eficiencia",
+              lecciones: [
+                { titulo: "La Marca Constante (Encabezados Y Pies De Página)" },
+                { titulo: "Nunca Te Pierdas (Numeración De Páginas)" },
+                { titulo: "El Arma Secreta (El Poder De Los Estilos)" },
+                {
+                  titulo:
+                    "El Mapa De Tu Documento (Tabla De Contenido Automatica)",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          nombre: "Google Docs",
+          modulos: [],
+        },
+      ],
+    },
+
+    {
+      titulo: "Diseño Visual",
+      existencia: true,
+      plataformas: [
+        {
+          nombre: "Power Point",
+          modulos: [],
+        },
+        {
+          nombre: "Canva",
+          modulos: [],
+        },
+      ],
+    },
+
+    {
+      titulo: "Almacenamiento",
+      existencia: true,
+      plataformas: [
+        {
+          nombre: "Google Drive",
+          modulos: [],
+        },
+      ],
+    },
+  ],
+};
+
+//CURSOS//
+document.addEventListener("DOMContentLoaded", () => {
+  const cursosBody = document.querySelector(".cursosBody");
+  const cursosListado = document.querySelector(".cursosListado");
+
+  let cursosExistentes = [];
+  for (let j = 0; j < cursosPlataforma.cursosTipo.length; j++) {
+    if (cursosPlataforma.cursosTipo[j].existencia) {
+      cursosExistentes.push(cursosPlataforma.cursosTipo[j]);
+    }
+  }
+
+  for (let i = 0; i < cursosExistentes.length; i++) {
+    const cursosDisponibles = document.createElement("button");
+    cursosDisponibles.classList.add("cursosDisponibles");
+    cursosDisponibles.innerText = cursosExistentes[i].titulo;
+    cursosListado.appendChild(cursosDisponibles);
+
+    cursosDisponibles.addEventListener("click", (e) => {
+      let cursoSeleccionado = e.target.innerText;
+      sessionStorage.setItem("cursoSeleccionado", cursoSeleccionado);
+
+      window.location.href = "/html/plataformas.html";
+    });
+  }
+  cursosBody.appendChild(cursosListado);
+});
+//CURSOS//
+
+//PLATAFORMAS//
+document.addEventListener("DOMContentLoaded", () => {
+  const cursoSeleccionado = sessionStorage.getItem("cursoSeleccionado");
+
+  let curso = cursosPlataforma.cursosTipo.find(
+    (i) => i.titulo === cursoSeleccionado
+  );
+
+  const plataformas_body = document.querySelector(".plataformas_body");
+  const plataformasListado = document.querySelector(".plataformasListado");
+  let mensaje = document.getElementById("cursoSeleccionado");
+  mensaje.innerText = cursoSeleccionado;
+  plataformas_body.prepend(mensaje);
+
+  curso.plataformas.forEach((plataforma) => {
+    let plataformas = document.createElement("button");
+    plataformas.classList.add("plataformas");
+    plataformas.innerText = plataforma.nombre;
+    plataformasListado.appendChild(plataformas);
+
+    plataformas.addEventListener("click", (e) => {
+      let plataformaSeleccionada = e.target.innerText;
+
+      sessionStorage.setItem("plataformaSeleccionada", plataformaSeleccionada);
+      sessionStorage.setItem("curso", JSON.stringify(curso));
+      window.location.href = "/html/curso/modulos.html";
+    });
+  });
+});
+//PLATAFORMAS//
+
+//MODULOS//
+document.addEventListener("DOMContentLoaded", () => {
+  const curso = JSON.parse(sessionStorage.getItem("curso"));
+
+  let plataformaSeleccionada = sessionStorage.getItem("plataformaSeleccionada");
+
+  const modulos_body = document.querySelector(".modulos_body");
+  const moduloListado = document.querySelector(".moduloListado");
+
+  const bienvenida = document.getElementById("bienvenida");
+
+  let mensaje = document.getElementById("plataformaSeleccionada");
+  mensaje.innerText = plataformaSeleccionada;
+  modulos_body.prepend(mensaje);
+
+  const plataformaActual = curso.plataformas.find(
+    (p) => p.nombre === plataformaSeleccionada
+  );
+  if (plataformaActual && plataformaActual.modulos.length > 0) {
+    plataformaActual.modulos.forEach((modulo) => {
+      let modulosDisponible = document.createElement("button");
+      modulosDisponible.classList.add("modulosDisponible");
+      modulosDisponible.innerText = modulo.modulo;
+      moduloListado.appendChild(modulosDisponible);
+
+      modulosDisponible.addEventListener("click", (e) => {
+        let moduloSeleccionado = e.target.innerText;
+        sessionStorage.setItem("moduloSeleccionado", moduloSeleccionado);
+        sessionStorage.setItem(
+          "plataformaActual",
+          JSON.stringify(plataformaActual)
+        );
+        window.location.href = "/html/curso/unidad.html";
+      });
+    });
+  } else {
+    let advertencia = document.createElement("h1");
+    advertencia.classList.add("advertencia");
+    advertencia.innerText = `¡La plataforma ${plataformaSeleccionada}\nestará disponible proximamente!`;
+    modulos_body.appendChild(advertencia);
+    bienvenida.remove();
+  }
+  modulos_body.appendChild(moduloListado);
+});
+//MODULOS//
+
+//UNIDAD//
+document.addEventListener("DOMContentLoaded", () => {
+  let plataformaActual = JSON.parse(sessionStorage.getItem("plataformaActual"));
+  let moduloSeleccionado = sessionStorage.getItem("moduloSeleccionado");
+  let mensaje = document.getElementById("moduloSeleccionado");
+  mensaje.innerText = moduloSeleccionado;
+
+  let unidadListado = document.querySelector(".unidadListado");
+
+  const unidadesActuales = plataformaActual.modulos.find(
+    (i) => i.modulo === moduloSeleccionado
+  );
+
+  unidadesActuales.lecciones.forEach((unidad) => {
+    let unidadesDisponible = document.createElement("button");
+    unidadesDisponible.classList.add("unidadesDisponible");
+    unidadesDisponible.innerText = unidad.titulo;
+    unidadListado.appendChild(unidadesDisponible);
+  });
+});
+//UNIDAD//
+
+
+
+https://github.com/EstebanAlvarez06/TecnoTask-/tree/main/INGENIERIA%20Y%20SUSTENTABILIDAD

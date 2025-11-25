@@ -1,0 +1,764 @@
+
+
+
+  
+  ACTIVIDAD FINAL MODULO 4, PENDIENTE AÑADIR
+
+
+
+  Actividad 3, modulo 1:  Añadir en negritas el texto escrito
+
+  Actividad 2, modulo 1: Añadir sonido a los click
+
+  Actividad 4, modulo 3:  Despejar pestañas y añadir colores acordes a los elementos dinamicos de herrmaientas de diseño
+
+  Actividad 2, modulo 4:  El css no se ve
+
+
+
+
+
+  actividades: [
+        {
+          trabajo: function iniciarTutorialInsertarImagen() {
+            const style = document.createElement("style");
+            style.textContent = `
+
+/* 🌈 Overlay suave pastel */
+body {
+  background: linear-gradient(135deg, #fff7eb, #fde6e0);
+  font-family: "Poppins", sans-serif;
+  color: #4b3f35;
+}
+  
+#tutorial-overlay { 
+  position: fixed; 
+  top:0; left:0; 
+  width:100%; 
+  height:100%; 
+  display:none; 
+  z-index:1000; 
+  pointer-events:none; 
+}
+
+/* 📜 Texto scrollable */
+#texto-amazonas {
+  overflow: auto;
+  width: 650px;
+  margin: 70px auto;
+  font-size: 19px;
+  line-height: 1.6;
+  font-family: "Poppins", sans-serif;
+  color: #4b3f35;
+  background: #fff9f3;
+  padding: 22px 28px;
+  border-radius: 14px;
+  border: 1px solid #e4cbb8;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+}
+
+/* 🧁 Mensaje pastel */
+#tutorial-message { 
+  position: fixed; 
+  bottom:40px; 
+  left:50%; 
+  transform:translateX(-50%); 
+  background:#fff7f0; 
+  padding:16px 24px; 
+  border-radius:14px; 
+  box-shadow:0 6px 20px rgba(0,0,0,.15); 
+  border:1px solid #f2d2b4;
+  z-index:1001; 
+  font-family:"Poppins", sans-serif; 
+  display:none; 
+  max-width:550px; 
+  text-align:center; 
+  font-size:17px;
+  color:#4b3f35;
+}
+
+/* 🔍 Flecha resaltada pastel */
+.highlight-arrow { 
+  position:absolute; 
+  width:44px; 
+  height:44px; 
+  border:3px solid #ffd46b; 
+  border-radius:50%; 
+  animation:pulse 1s infinite alternate; 
+  z-index:1200; 
+}
+
+@keyframes pulse { 
+  0% { transform:scale(1); } 
+  100% { transform:scale(1.25); } 
+}
+
+/* ✨ XP flotante pastel */
+.xp-feedback { 
+  position:absolute; 
+  color:#00aa55; 
+  font-size:20px; 
+  font-weight:700; 
+  animation:floatUp 1.4s forwards; 
+  z-index:2000; 
+  text-shadow:0 0 6px rgba(0,255,100,0.4);
+}
+
+@keyframes floatUp {
+  0% { opacity:1; transform:translateY(0); }
+  100% { opacity:0; transform:translateY(-40px); }
+}
+
+`;
+
+            document.head.appendChild(style);
+
+            const overlay = document.createElement("div");
+            overlay.id = "tutorial-overlay";
+            document.body.appendChild(overlay);
+
+            overlay.remove();
+
+            const msg = document.createElement("div");
+            msg.id = "tutorial-message";
+            document.body.appendChild(msg);
+
+            const texto = document.createElement("div");
+            texto.id = "texto-amazonas";
+            texto.innerHTML = `
+      La selva amazónica es el bosque tropical más grande del mundo,
+      hogar de millones de especies de animales y plantas, muchas aún sin descubrir.
+      Su importancia para el clima global es vital.
+    `;
+            document.body.appendChild(texto);
+
+            let step = 0;
+            let imagen = null;
+            let botonDiseno = null;
+            let panelDiseno = null;
+            let arrow = null;
+            let resizing = false;
+            let startX = 0,
+              startY = 0,
+              startW = 0,
+              startH = 0;
+
+            function showMessage(text) {
+              msg.innerHTML = text;
+              msg.style.display = "block";
+              overlay.style.display = "none"; // ❗ Nunca se muestra arriba
+            }
+
+            function hideMessage() {
+              msg.style.display = "none";
+              overlay.style.display = "none"; // ❗❗ YA NO BLOQUEA NADA
+            }
+
+            function showXP(x, y, text) {
+              const xp = document.createElement("div");
+              xp.className = "xp-feedback";
+              xp.style.left = x + "px";
+              xp.style.top = y + "px";
+              xp.textContent = text;
+              document.body.appendChild(xp);
+              setTimeout(() => xp.remove(), 1400);
+            }
+
+            function removeArrow() {
+              if (arrow && arrow.parentNode)
+                arrow.parentNode.removeChild(arrow);
+              arrow = null;
+            }
+
+            function insertarTucanOnce() {
+              if (imagen) return;
+              imagen = document.createElement("img");
+              imagen.src = "https://picsum.photos/400/260?random=92";
+              imagen.style.width = "450px";
+              imagen.style.display = "block";
+              imagen.style.margin = "0px";
+              imagen.style.cursor = "pointer";
+
+              texto.prepend(imagen);
+
+              prepararListenersImagen();
+
+              step = 1;
+              showMessage(
+                "¡Ahí está nuestro amigo! Haz clic en la imagen para seleccionarla."
+              );
+            }
+
+            function prepararListenersImagen() {
+              const onClick = (e) => {
+                if (step !== 1) return;
+                step = 2;
+                showMessage(
+                  "+10 XP — Haz clic en 'Opciones de diseño' (aparecerá cerca de la imagen)."
+                );
+                showXP(e.clientX, e.clientY - 30, "+10 XP");
+
+                crearBotonDiseno();
+                posicionarBotonDiseno();
+
+                createArrowAt(botonDiseno);
+              };
+
+              imagen.addEventListener("click", onClick);
+
+              const onMouseDown = (e) => {
+                if (step !== 3) return;
+                const rect = imagen.getBoundingClientRect();
+                const corner = 28;
+                const inCornerX =
+                  e.clientX >= rect.right - corner &&
+                  e.clientX <= rect.right + corner;
+                const inCornerY =
+                  e.clientY >= rect.bottom - corner &&
+                  e.clientY <= rect.bottom + corner;
+                if (!(inCornerX && inCornerY)) return;
+
+                resizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startW = rect.width;
+                startH = rect.height;
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
+                e.preventDefault();
+              };
+
+              const onMouseMove = (e) => {
+                if (!resizing) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                const newW = Math.max(80, startW + dx);
+                imagen.style.width = newW + "px";
+              };
+
+              const onMouseUp = (e) => {
+                if (!resizing) return;
+                resizing = false;
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+
+                if (step === 3) {
+                  step = 4;
+                  showMessage(
+                    "¡Bien! Ahora elige la opción 'Cuadrado' en el panel de diseño."
+                  );
+                  const r = imagen.getBoundingClientRect();
+                  showXP(r.left, r.top - 40, "+15 XP");
+
+                  if (panelDiseno) posicionarPanelDiseno();
+                }
+              };
+
+              imagen.addEventListener("mousedown", onMouseDown);
+
+              imagen._onClick = onClick;
+              imagen._onMouseDown = onMouseDown;
+            }
+
+            function crearBotonDiseno() {
+              if (botonDiseno) return;
+              botonDiseno = document.createElement("div");
+              botonDiseno.textContent = "⚙️ Opciones de diseño";
+              botonDiseno.style.position = "absolute";
+              botonDiseno.style.background = "#fff";
+              botonDiseno.style.padding = "6px 10px";
+              botonDiseno.style.borderRadius = "8px";
+              botonDiseno.style.border = "1px solid #ccc";
+              botonDiseno.style.cursor = "pointer";
+              botonDiseno.style.zIndex = 1500;
+              document.body.appendChild(botonDiseno);
+
+              botonDiseno.addEventListener("click", (e) => {
+                if (step < 2) return;
+
+                if (step === 2) {
+                  step = 3;
+                  showMessage(
+                    "Ahora toma la esquina inferior-derecha de la imagen y arrastra para redimensionarla."
+                  );
+                  removeArrow();
+                }
+
+                mostrarPanelDiseno();
+              });
+            }
+
+            function posicionarBotonDiseno() {
+              if (!botonDiseno || !imagen) return;
+              const r = imagen.getBoundingClientRect();
+              botonDiseno.style.top = window.scrollY + r.top - 44 + "px";
+              botonDiseno.style.left = window.scrollX + r.left + "px";
+            }
+
+            function mostrarPanelDiseno() {
+              if (panelDiseno) return;
+              panelDiseno = document.createElement("div");
+              panelDiseno.style.position = "absolute";
+              panelDiseno.style.background = "#fff";
+              panelDiseno.style.padding = "8px";
+              panelDiseno.style.border = "1px solid #bbb";
+              panelDiseno.style.borderRadius = "8px";
+              panelDiseno.style.zIndex = 1500;
+
+              const opc = document.createElement("button");
+              opc.textContent = "⬛ Cuadrado";
+              opc.style.display = "block";
+              opc.style.margin = "4px 0";
+              opc.style.padding = "6px 8px";
+              panelDiseno.appendChild(opc);
+              document.body.appendChild(panelDiseno);
+
+              opc.addEventListener("click", () => {
+                // Wrap
+                imagen.style.cssFloat = "left";
+                imagen.style.margin = "0 14px 8px 0";
+                texto.style.display = "block";
+
+                // XP inmediato
+                showXP(
+                  panelDiseno.getBoundingClientRect().left,
+                  panelDiseno.getBoundingClientRect().top - 30,
+                  "+40 XP"
+                );
+
+                // Paso 10: Feedback mágico
+                // 1️⃣ MAGIA
+                showMessage(
+                  "✨ ¡MAGIA! El texto se está reorganizando alrededor de la imagen…"
+                );
+
+                // 2️⃣ Esperar a que se lea
+                setTimeout(() => {
+                  // 3️⃣ INCREÍBLE
+                  showMessage(
+                    "¡INCREÍBLE! Acabas de dar un paso de gigante. " +
+                      "Ahora puedes crear documentos que parecen de revista. " +
+                      "¡+40 XP por esta habilidad de nivel PRO!"
+                  );
+
+                  // 4️⃣ Esperar a que termine el mensaje “INCREÍBLE”
+                  setTimeout(() => {
+                    // 5️⃣ Cerrar tutorial normal y comenzar el desafío
+                    cleanupTutorial();
+                    iniciarDesafioFinal();
+                  }, 1800); // tiempo para leer “INCREÍBLE”
+                }, 1400); // tiempo para leer “MAGIA”
+
+                let toolbar = document.querySelector("#toolbar");
+                if (!toolbar) {
+                  toolbar = document.createElement("div");
+                  toolbar.id = "toolbar";
+                  toolbar.style.marginTop = "20px";
+                  toolbar.style.display = "flex";
+                  toolbar.style.gap = "10px";
+                  toolbar.style.position = "sticky";
+                  toolbar.style.top = "10px";
+                  toolbar.style.zIndex = "2000";
+
+                  toolbar.innerHTML = `
+    <button id="insertar-imagen">🖼 Insertar imagen</button>
+    <button id="insertar-tabla">📊 Insertar tabla</button>
+  `;
+
+                  document.body.prepend(toolbar);
+                }
+
+                function iniciarDesafioFinal() {
+                  let paso = 1;
+
+                  // 🔥 Asegurar que NO exista overlay que tape botones
+                  document.querySelector("#tutorial-overlay")?.remove();
+
+                  // ============================================================
+                  // CREAR O RECUPERAR ÁREA DE DOCUMENTO
+                  // ============================================================
+                  let area = document.querySelector("#documento");
+                  if (!area) {
+                    area = document.createElement("div");
+                    area.id = "documento";
+                    area.contentEditable = "true"; // para escribir
+                    area.style.minHeight = "300px";
+                    area.style.border = "1px solid #ccc";
+                    area.style.padding = "12px";
+                    area.style.marginTop = "25px";
+                    area.style.whiteSpace = "normal";
+                    area.style.display = "block";
+                    area.style.wordBreak = "break-word";
+                    area.style.overflowWrap = "break-word";
+                    area.style.userSelect = "text";
+
+                    document.body.appendChild(area);
+                  }
+
+                  // ============================================================
+                  // CREAR TOOLBAR SI NO EXISTE (AQUÍ SE AGREGAN LOS BOTONES)
+                  // ============================================================
+                  let toolbar = document.querySelector("#toolbar");
+                  if (!toolbar) {
+                    toolbar = document.createElement("div");
+                    toolbar.id = "toolbar";
+                    toolbar.style.display = "flex";
+                    toolbar.style.gap = "10px";
+                    toolbar.style.marginTop = "20px";
+
+                    toolbar.innerHTML = `
+      <button id="insertar-imagen">🖼 Insertar imagen</button>
+      <button id="insertar-tabla">📊 Insertar tabla</button>
+    `;
+
+                    document.body.prepend(toolbar);
+                  }
+
+                  // 🔥 IMPORTANTÍSIMO: LOS BOTONES SE TOMAN DESPUÉS DE CREAR LA TOOLBAR
+                  const imgBtn = document.querySelector("#insertar-imagen");
+                  const tablaBtn = document.querySelector("#insertar-tabla");
+
+                  // 🔥 ACTIVAR FUNCIONES DE LOS BOTONES
+                  imgBtn.addEventListener("click", insertarImagen);
+                  tablaBtn.addEventListener("click", crearTabla);
+
+                  showMessage(
+                    "🛠️ DESAFÍO FINAL: Crea la ficha técnica del <b>Chrono-Reloj X1</b>."
+                  );
+
+                  // ============================================================
+                  // PASO 1 — TITULO
+                  // ============================================================
+                  showMessage(
+                    "1️⃣ Escribe el título: <b>Chrono-Reloj X1</b> y presiona Enter."
+                  );
+
+                  function checkTitulo() {
+                    const txt = area.innerText.trim();
+
+                    if (/chrono[- ]reloj x1/i.test(txt)) {
+                      area.removeEventListener("input", checkTitulo);
+                      area.removeEventListener("keyup", checkTitulo);
+
+                      showXP(area.offsetLeft, area.offsetTop - 20, "+20 XP");
+                      paso = 2;
+                      iniciarPaso2();
+                    }
+                  }
+
+                  area.addEventListener("input", checkTitulo);
+                  area.addEventListener("keyup", checkTitulo);
+
+                  // ============================================================
+                  // PASO 2 — INSERTAR IMAGEN
+                  // ============================================================
+                  function iniciarPaso2() {
+                    showMessage(
+                      "📸 Inserta la imagen con el botón 'Insertar imagen'…"
+                    );
+                    imgBtn.classList.add("highlight");
+                  }
+
+                  function insertarImagen() {
+                    const img = document.createElement("img");
+                    img.src =
+                      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600";
+
+                    img.id = "reloj-x1";
+                    img.style.width = "180px";
+                    img.style.cursor = "pointer";
+                    img.style.display = "block";
+
+                    area.appendChild(img);
+
+                    imgBtn.classList.remove("highlight");
+
+                    paso = 3;
+                    iniciarPaso3();
+                  }
+
+                  // ============================================================
+                  // PASO 3 — MOVER IMAGEN
+                  // ============================================================
+                  function iniciarPaso3() {
+                    showMessage(
+                      "3️⃣ Haz clic en la imagen para moverla a la derecha."
+                    );
+
+                    const img = document.querySelector("#reloj-x1");
+
+                    function moverDerecha() {
+                      img.style.float = "right";
+                      img.style.margin = "0 0 10px 10px";
+
+                      img.removeEventListener("click", moverDerecha);
+
+                      showXP(img.offsetLeft, img.offsetTop - 20, "+25 XP");
+
+                      paso = 4;
+                      iniciarPaso4();
+                    }
+
+                    img.addEventListener("click", moverDerecha);
+                  }
+
+                  // ============================================================
+                  // PASO 4 — DESCRIPCIÓN
+                  // ============================================================
+                  function iniciarPaso4() {
+                    showMessage(
+                      "4️⃣ Escribe un párrafo describiendo el producto (Mayor a 30 letras)."
+                    );
+
+                    function checkDescripcion() {
+                      // Obtener solo el texto NUEVO que escribió el usuario,
+                      // ignorando el título y ignorando la imagen.
+                      const contenido = area.innerText
+                        .replace(/Chrono[- ]?Reloj X1/i, "")
+                        .trim();
+
+                      if (contenido.length > 30) {
+                        area.removeEventListener("input", checkDescripcion);
+
+                        showXP(
+                          area.offsetLeft + 50,
+                          area.offsetTop - 20,
+                          "+30 XP"
+                        );
+
+                        paso = 5;
+                        iniciarPaso5();
+                      }
+                    }
+
+                    area.addEventListener("input", checkDescripcion);
+                  }
+
+                  // ============================================================
+                  // PASO 5 — TABLA
+                  // ============================================================
+                  function iniciarPaso5() {
+                    showMessage(
+                      "5️⃣ Inserta una tabla con el botón <b>Insertar Tabla</b>."
+                    );
+
+                    tablaBtn.classList.add("highlight");
+                  }
+                  function crearTabla() {
+                    const table = document.createElement("table");
+                    table.id = "tabla-especificaciones";
+                    table.style.borderCollapse = "collapse";
+                    table.style.marginTop = "10px";
+                    table.style.width = "100%";
+
+                    table.innerHTML = `
+    <tr>
+      <th style="border:1px solid #999; padding:6px;">Característica</th>
+      <th style="border:1px solid #999; padding:6px;">Valor</th>
+    </tr>
+    <tr>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+    </tr>
+    <tr>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+    </tr>
+     <tr>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+      <td contenteditable="true" style="border:1px solid #999; padding:6px;"></td>
+    </tr>
+  `;
+
+                    area.appendChild(table);
+
+                    tablaBtn.classList.remove("highlight");
+
+                    paso = 6;
+                    iniciarPaso6();
+                  }
+
+                  // ============================================================
+                  // PASO 6 — LLENAR TABLA
+                  // ============================================================
+                  // ============================================================
+                  // PASO 6 — LLENAR TABLA COMPLETA
+                  // ============================================================
+                  function iniciarPaso6() {
+                    showMessage(
+                      "6️⃣ Rellena la tabla con las especificaciones:<br><br>" +
+                        `<b>Características:</b><br>
+    • Pantalla → AMOLED 1.5"<br>
+    • Batería → 48 horas<br>
+    • Resistencia → Agua (50m)<br><br>
+    Escribe los valores en la columna derecha.`
+                    );
+
+                    function checkTabla() {
+                      const t = document.querySelector(
+                        "#tabla-especificaciones"
+                      );
+                      const filas = Array.from(t.querySelectorAll("tr")).slice(
+                        1
+                      ); // Ignorar encabezado
+
+                      // Normalizar texto para comparar
+                      const textoFilas = filas.map((row) => {
+                        const celdas = row.querySelectorAll("td");
+                        return {
+                          caracteristica: celdas[0]?.innerText
+                            .trim()
+                            .toLowerCase(),
+                          valor: celdas[1]?.innerText.trim().toLowerCase(),
+                        };
+                      });
+
+                      // Detectar cada característica + valor correcto
+                      const tienePantalla = textoFilas.some(
+                        (f) =>
+                          f.caracteristica.includes("pantalla") &&
+                          (f.valor.includes("amoled") ||
+                            f.valor.includes("1.5"))
+                      );
+
+                      const tieneBateria = textoFilas.some(
+                        (f) =>
+                          f.caracteristica.includes("batería") ||
+                          (f.caracteristica.includes("bateria") &&
+                            (f.valor.includes("48") ||
+                              f.valor.includes("hora")))
+                      );
+
+                      const tieneResistencia = textoFilas.some(
+                        (f) =>
+                          (f.caracteristica.includes("resistencia") ||
+                            f.caracteristica.includes("agua")) &&
+                          (f.valor.includes("agua") || f.valor.includes("50"))
+                      );
+
+                      if (tienePantalla && tieneBateria && tieneResistencia) {
+                        area.removeEventListener("input", checkTabla);
+
+                        showXP(
+                          area.offsetLeft + 100,
+                          area.offsetTop - 20,
+                          "+40 XP"
+                        );
+
+                        paso = 7;
+                        iniciarPaso7();
+                      }
+                    }
+
+                    area.addEventListener("input", checkTabla);
+                  }
+
+                  // ============================================================
+                  // PASO 7 — SOMBREAR
+                  // ============================================================
+                  function iniciarPaso7() {
+                    showMessage(
+                      "7️⃣ Haz clic en el encabezado de la tabla para sombrearlo."
+                    );
+
+                    const header = document.querySelector(
+                      "#tabla-especificaciones tr"
+                    );
+
+                    function sombrear() {
+                      header.style.background = "#d0d0d0";
+                      header.removeEventListener("click", sombrear);
+                      finalizarDesafio();
+                    }
+
+                    header.addEventListener("click", sombrear);
+                  }
+
+                  // ============================================================
+                  // FINAL
+                  // ============================================================
+                  function finalizarDesafio() {
+                    showXP(
+                      area.offsetLeft + 120,
+                      area.offsetTop - 20,
+                      "+200 XP"
+                    );
+
+                    showMessage(
+                      "🏆 <b>DESAFÍO COMPLETADO</b><br>" +
+                        "Ficha técnica creada correctamente.<br>" +
+                        "Insignia desbloqueada: <b>Arquitecto de la Información ⭐</b>"
+                    );
+                  }
+                }
+              });
+
+              posicionarPanelDiseno();
+            }
+
+            function posicionarPanelDiseno() {
+              if (!panelDiseno || !botonDiseno) return;
+              const r = botonDiseno.getBoundingClientRect();
+              panelDiseno.style.top = window.scrollY + r.bottom + 8 + "px";
+              panelDiseno.style.left = window.scrollX + r.left + "px";
+            }
+
+            function cleanupTutorial() {
+              removeArrow();
+
+              setTimeout(() => {
+                overlay.style.display = "none";
+                msg.style.display = "none";
+              }, 1200);
+
+              if (imagen) {
+                if (imagen._onClick)
+                  imagen.removeEventListener("click", imagen._onClick);
+                if (imagen._onMouseDown)
+                  imagen.removeEventListener("mousedown", imagen._onMouseDown);
+              }
+            }
+
+            window.addEventListener("scroll", () => {
+              posicionarBotonDiseno();
+              posicionarPanelDiseno();
+            });
+            window.addEventListener("resize", () => {
+              posicionarBotonDiseno();
+              posicionarPanelDiseno();
+            });
+
+            showMessage("Vamos a insertar una imagen");
+
+            setTimeout(() => {
+              insertarTucanOnce && insertarTucanOnce();
+            }, 700);
+          },
+        },
+      ],
+
+a la barrita de opciones de diseño dale colorcito igual
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (panelDiseno) {
+                const botones = panelDiseno.querySelectorAll("button");
+                botones.forEach((btn) => {
+                  if (btn.textContent.includes("⬛ Cuadrado")) {
+                    btn.remove();
+                  }
+                });
+              }
