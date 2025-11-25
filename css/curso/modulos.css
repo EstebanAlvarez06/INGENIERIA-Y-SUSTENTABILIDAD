@@ -1,0 +1,117 @@
+/* .modulos_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.moduloListado {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.moduloListado button {
+  margin: 10px;
+  border-radius: 20px;
+  height: 15vh;
+  width: 55vw;
+  cursor: pointer;
+}
+
+.advertencia {
+  color: black;
+  text-align: center;
+  margin-top: 250px;
+}
+
+#bienvenida {
+  margin-top: 20px;
+}
+ */
+
+/* 🍦 --- CONTENEDOR PRINCIPAL DE MÓDULOS --- */
+.modulos_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+
+  /* Fondo degradado cremoso */
+  background: linear-gradient(135deg, #fff6e9, #fde6e0);
+  min-height: 100vh;
+  margin: 0;
+  color: #4b3f35;
+}
+
+/* 🧩 --- LISTADO DE MÓDULOS --- */
+.moduloListado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+/* 🍰 --- BOTONES DE LOS MÓDULOS --- */
+.moduloListado button {
+  margin: 10px;
+  border-radius: 20px;
+  height: 15vh;
+  width: 55vw;
+  cursor: pointer;
+  border: none;
+
+  /* Fondo pastel */
+  background-color: #fbe3c6;
+  color: #4b3f35;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  /* Sombra y transición suaves */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+/* ☕ --- EFECTO AL PASAR EL CURSOR --- */
+.moduloListado button:hover {
+  background-color: #ffd8b8;
+  color: #2b2b2b;
+  transform: scale(1.05);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+}
+
+/* 👋 --- MENSAJE DE BIENVENIDA --- */
+#bienvenida {
+  margin-top: 20px;
+  font-size: 38px;
+  font-weight: 700;
+  text-align: center;
+  color: #4b3f35;
+  text-shadow: 0 2px 6px rgba(255, 190, 150, 0.3);
+  animation: aparecerSuave 1s ease-out;
+}
+
+/* ⚠️ --- MENSAJE DE ADVERTENCIA --- */
+.advertencia {
+  color: #6b5c50;
+  text-align: center;
+  margin-top: 250px;
+  font-size: 1rem;
+  opacity: 0.85;
+  background-color: #fff5eb;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* 🎞️ --- ANIMACIÓN SUAVE DE ENTRADA --- */
+@keyframes aparecerSuave {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

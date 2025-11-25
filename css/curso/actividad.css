@@ -1,0 +1,14 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#leccionSeleccionada {
+  text-align: center;
+  margin-top: 60px;
+}
+
+#inicioActividad {
+  text-align: center;
+}
