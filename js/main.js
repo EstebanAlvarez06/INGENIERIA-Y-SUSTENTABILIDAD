@@ -1,8 +1,8 @@
-import { codCursos } from "../js/curso/cursos.js";
-import { codPlataformas } from "../js/curso/plataformas.js";
-import { codModulos } from "../js/curso/modulos.js";
-import { codUnidad } from "../js/curso/unidad.js";
-import { codActividad } from "../js/curso/actividad.js";
+import { codCursos } from "./curso/cursos.js";
+import { codPlataformas } from "./curso/plataformas.js";
+import { codModulos } from "./curso/modulos.js";
+import { codUnidad } from "./curso/unidad.js";
+import { codActividad } from "./curso/actividad.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector(".cursosBody")) {
