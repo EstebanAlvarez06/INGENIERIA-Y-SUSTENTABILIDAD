@@ -1,47 +1,14 @@
-/* .cursosBody {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.cursosListado {
-  display: flex;
-  flex-direction: column;
-  margin-top: 90px;
-}
-
-.cursosListado button {
-  margin: 10px;
-  border-radius: 20px;
-  height: 15vh;
-  width: 55vw;
-  cursor: pointer;
-}
-
-.cursosListado button:hover {
-  color: #0a0a1a;
-}
-
-#bienvenida {
-  margin-top: 110px;
-}
- */
-
-/* 🍦 --- CONTENEDOR PRINCIPAL DE LOS CURSOS --- */
 .cursosBody {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Poppins", sans-serif;
-
-  /* Fondo cremoso con toque de luz */
   background: linear-gradient(135deg, #fff6e9, #fde6e0);
   min-height: 100vh;
   margin: 0;
   color: #4b3f35;
 }
 
-/* 🧩 --- LISTADO DE CURSOS --- */
 .cursosListado {
   display: flex;
   flex-direction: column;
@@ -50,7 +17,6 @@
   gap: 20px;
 }
 
-/* 🍰 --- BOTONES DE CADA CURSO --- */
 .cursosListado button {
   margin: 10px;
   border-radius: 20px;
@@ -58,19 +24,14 @@
   width: 55vw;
   cursor: pointer;
   border: none;
-
-  /* Fondo pastel cremoso */
   background-color: #fbe3c6;
   color: #4b3f35;
   font-size: 1.2rem;
   font-weight: 600;
-
-  /* Sombras y animación suave */
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-/* ☕ --- EFECTO HOVER --- */
 .cursosListado button:hover {
   background-color: #ffd8b8;
   color: #2b2b2b;
@@ -78,22 +39,16 @@
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
 }
 
-/* 👋 --- TEXTO DE BIENVENIDA --- */
 #bienvenida {
   margin-top: 110px;
   font-size: 42px;
   font-weight: 700;
   text-align: center;
   color: #4b3f35;
-
-  /* Sombra de texto muy ligera para sensación de volumen */
   text-shadow: 0 2px 8px rgba(255, 190, 150, 0.25);
-
-  /* Suave animación de entrada */
   animation: aparecerSuave 1s ease-out;
 }
 
-/* 🎞️ --- ANIMACIÓN DE APARICIÓN SUAVE --- */
 @keyframes aparecerSuave {
   from {
     opacity: 0;
